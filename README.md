@@ -88,7 +88,7 @@ anchor deploy
 
 ### Run Tests
 
-Execute the test suite in [tests/crud-app.ts](tests/crud-app.ts):
+Execute the test suite in [tests/crud-app.ts](tests/crud-app.ts): ( Test not written Yet)
 
 ```bash
 anchor test
