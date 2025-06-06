@@ -1,3 +1,5 @@
+use std::fmt::Sign;
+
 use anchor_lang::prelude::*;
 // use crate::SourceFile;
 // use crate::fallback::SourceFile;
@@ -32,6 +34,10 @@ pub mod crud_app {
         });
         Ok(())
     }
+
+    pub fn delete(ctx: Context<DeleteJournalEntry>,_title: String)->Result<()>{
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -63,6 +69,19 @@ pub struct UpdateJournalEntry<'info>{
         realloc::payer = owner
     )]
     pub journal_entry : Account<'info,JournalState>,
+    pub system_program : Program<'info,System>
+}
+
+pub struct DeleteJournalEntry<'info>{
+    #[account(mut)]
+    pub owner : Signer<'info>,
+    #[account(
+        mut,
+        seeds = [title.as_bytes() , owner.key().as_ref()],
+        bump,
+        close = owner
+    )]
+    pub journal_entry :Account<'info,JournalState>,
     pub system_program : Program<'info,System>
 }
 
