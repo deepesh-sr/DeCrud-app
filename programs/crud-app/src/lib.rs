@@ -1,5 +1,3 @@
-use std::fmt::Sign;
-
 use anchor_lang::prelude::*;
 // use crate::SourceFile;
 // use crate::fallback::SourceFile;
@@ -57,6 +55,8 @@ pub struct GetJournalEntry<'info> {
     pub system_program: Program<'info, System>,
 }
 
+#[derive(Accounts)]
+#[instruction(title:String)]
 pub struct UpdateJournalEntry<'info>{
     #[account(mut)]
     pub owner : Signer<'info>,
@@ -72,6 +72,8 @@ pub struct UpdateJournalEntry<'info>{
     pub system_program : Program<'info,System>
 }
 
+#[derive(Accounts)]
+#[instruction(title:String)]
 pub struct DeleteJournalEntry<'info>{
     #[account(mut)]
     pub owner : Signer<'info>,
