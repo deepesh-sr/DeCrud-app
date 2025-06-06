@@ -16,7 +16,17 @@ pub mod crud_app {
         msg!("Greetings from: {:?}", ctx.program_id);
         let journal_entry = &mut ctx.accounts.journal_entry;
         journal_entry.set_inner(JournalState {
-            owner : ctx.accounts.owner.key(),
+            owner: ctx.accounts.owner.key(),
+            title,
+            description,
+        });
+        Ok(())
+    }
+
+    pub fn update(ctx: Context<UpdateJournalEntry>, title: String, description: String) -> Result<()> {
+        let journal_entry = &mut ctx.accounts.journal_entry;
+        journal_entry.set_inner(JournalState {
+            owner: ctx.accounts.owner.key(),
             title,
             description,
         });
@@ -39,6 +49,21 @@ pub struct GetJournalEntry<'info> {
     )]
     pub journal_entry: Account<'info, JournalState>,
     pub system_program: Program<'info, System>,
+}
+
+pub struct UpdateJournalEntry<'info>{
+    #[account(mut)]
+    pub owner : Signer<'info>,
+    #[account(
+        mut,
+        seeds = [title.as_bytes(),owner.key().as_ref()],
+        bump,
+        realloc = 8 + JournalState::INIT_SPACE,
+        realloc::zero= true,
+        realloc::payer = owner
+    )]
+    pub journal_entry : Account<'info,JournalState>,
+    pub system_program : Program<'info,System>
 }
 
 // It is the account sate , just say a skeleteon which will have multiple bodies over it.
